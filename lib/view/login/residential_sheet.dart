@@ -1,4 +1,5 @@
 import 'package:comd_app/controller/login_request.dart';
+import 'package:comd_app/view/login/condo_info_sheet.dart';
 import 'package:comd_app/view/login/input_field.dart';
 import 'package:comd_app/view/login/login_page.dart';
 import 'package:flutter/material.dart';
@@ -15,11 +16,11 @@ class _ResidentialSheetState extends State<ResidentialSheet> {
   String? _selectedMoradia;
   final List<String> _moradiaOptions = [];
 
-  late List<TextEditingController> condoInfoControllers;
+  
 
   @override
   void initState() {
-    condoInfoControllers = createControllersFromApi(resultCondoInfoText['fields']);
+    
     resultCondoInfoText['fields'][2]['options'].forEach((field) {
       _moradiaOptions.add(field['description']);
     });
@@ -56,7 +57,7 @@ class _ResidentialSheetState extends State<ResidentialSheet> {
                       return (index != 1 && index != 2)?InputField(
                         label: resultCondoInfoText['fields'][index]['label'],
                         hintText: resultCondoInfoText['fields'][index]['placeholder'],
-                        icon: Icons.business,
+                        icon: resultCondoInfoText['fields'][index]['icon'],
                         keyboardType: TextInputType.text,
                         controller: condoInfoControllers[index],
                         validator: (value) {
@@ -72,7 +73,7 @@ class _ResidentialSheetState extends State<ResidentialSheet> {
                         child: InputField(
                           label: resultCondoInfoText['fields'][index]['label'],
                           hintText: resultCondoInfoText['fields'][index]['placeholder'],
-                          icon: Icons.format_list_numbered,
+                          icon: resultCondoInfoText['fields'][index]['icon'],
                           keyboardType: TextInputType.text,
                           controller: condoInfoControllers[index],
                         ),
@@ -109,7 +110,7 @@ class _ResidentialSheetState extends State<ResidentialSheet> {
                                   onChanged: (value) {
                                     setState(() {
                                       _selectedMoradia = value;
-                                      condoInfoControllers[index].text = value!;
+                                      condoInfoControllers[index+1].text = value!;
                                     });
                                   },
                                   decoration: InputDecoration(

@@ -4,7 +4,8 @@ import 'package:comd_app/view/login/login_page.dart';
 import 'package:comd_app/view/login/register_sheet.dart';
 import 'package:flutter/material.dart';
 import 'input_field.dart'; // Importando o InputField
-
+late List<TextEditingController> condoControllers;
+late List<TextEditingController> condoInfoControllers;
 class CondoInfoSheet extends StatefulWidget {
   const CondoInfoSheet({Key? key}) : super(key: key);
 
@@ -14,11 +15,12 @@ class CondoInfoSheet extends StatefulWidget {
 
 class _CondoInfoSheetState extends State<CondoInfoSheet> {
   final _formKey = GlobalKey<FormState>();
-  late List<TextEditingController> condoControllers;
+  
 
   @override
   void initState() {
     condoControllers = createControllersFromApi(resultCondoText['fields']);
+    condoInfoControllers = createControllersFromApi(resultCondoInfoText['fields']);
     super.initState();
   }
 
@@ -52,7 +54,7 @@ class _CondoInfoSheetState extends State<CondoInfoSheet> {
                     title: InputField(
                       label: resultCondoText['fields'][index]['label'],
                       hintText: resultCondoText['fields'][index]['placeholder'],
-                      icon: Icons.business,
+                      icon: resultCondoText['fields'][index]['icon'],
                       keyboardType: TextInputType.text,
                       controller: condoControllers[index],
                       validator: (value) {

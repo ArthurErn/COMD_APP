@@ -22,6 +22,7 @@ class _LoginSheetState extends State<LoginSheet> {
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
       child: Container(
+        height: MediaQuery.of(context).size.height * 0.65,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -36,14 +37,14 @@ class _LoginSheetState extends State<LoginSheet> {
             InputField(
               label: 'Nome completo',
               hintText: 'Nome',
-              icon: Icons.person,
+              icon: 'icon-user',
               controller: _usernameController,
             ),
             SizedBox(height: 10),
             InputField(
               label: 'Senha',
               hintText: 'Senha',
-              icon: Icons.lock,
+              icon: 'icon-password',
               obscureText: true,
               controller: _passwordController,
             ),

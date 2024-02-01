@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class InputField extends StatelessWidget {
   final String label;
   final String hintText;
-  final IconData icon;
+  final String icon;
   final TextInputType? keyboardType;
   final TextEditingController? controller;
   final String? Function(String?)? validator;
@@ -42,7 +42,7 @@ class InputField extends StatelessWidget {
               hintText: hintText,
               filled: true,
               fillColor: Colors.grey[300],
-              prefixIcon: Icon(icon, color: Colors.grey),
+              prefixIcon: Image.asset('lib/assets/icons/$icon.png', filterQuality: FilterQuality.high,),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5.0),
                 borderSide: BorderSide.none,

@@ -20,12 +20,6 @@ class RegisterSheet extends StatefulWidget {
 }
 
 final _formKey = GlobalKey<FormState>();
-final _phoneController = MaskedTextController(mask: '(00) 9 0000-0000');
-final _nameController = TextEditingController();
-final _emailController = TextEditingController();
-final _cpfController = MaskedTextController(mask: '000.000.000-00');
-final _rgController = TextEditingController();
-final _addressController = TextEditingController();
 
 List<bool> etapaConcluida = [false, false, false, false];
 
@@ -48,7 +42,7 @@ class _RegisterSheetState extends State<RegisterSheet> {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: SizedBox(
-          height: 390,
+          height: 400,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -69,7 +63,8 @@ class _RegisterSheetState extends State<RegisterSheet> {
                         label: resultRegisterText['fields'][index]['label'],
                         hintText: resultRegisterText['fields'][index]
                             ['placeholder'],
-                        icon: Icons.person,
+                        icon: resultRegisterText['fields'][index]
+                            ['icon'],
                         keyboardType: TextInputType.text,
                         controller: registerControllers[index],
                         // validator: validateName,
@@ -116,7 +111,7 @@ void showRegisterModal(context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return SizedBox(
-            height: 510,
+            height: MediaQuery.of(context).size.height * 0.65,
             child: Column(
               children: [
                 actualPage(),
@@ -246,7 +241,7 @@ void showFirstModal(context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return SizedBox(
-            height: 490,
+            height: MediaQuery.of(context).size.height * 0.65,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -419,8 +414,44 @@ void showFirstModal(context) {
 }
 
 void showMyInfosModal(context) {
+  dynamic everyInfo = [];
+  dynamic everyIcon = [];
+  dynamic everyControllerText = [];
+  //INFOS
+  for(int i = 0;i < resultRegisterText['fields'].length;i++){
+    everyInfo.add(resultRegisterText['fields'][i]['label']);
+  }
+  for(int i = 0;i < resultCondoText['fields'].length;i++){
+    everyInfo.add(resultCondoText['fields'][i]['label']);
+  }
+  for(int i = 0;i < resultCondoInfoText['fields'].length;i++){
+    everyInfo.add(resultCondoInfoText['fields'][i]['label']);
+  }
+  //ICONES
+  for(int i = 0;i < resultRegisterText['fields'].length;i++){
+    everyIcon.add(resultRegisterText['fields'][i]['icon']);
+  }
+  for(int i = 0;i < resultCondoText['fields'].length;i++){
+    everyIcon.add(resultCondoText['fields'][i]['icon']);
+  }
+  for(int i = 0;i < resultCondoInfoText['fields'].length;i++){
+    everyIcon.add(resultCondoInfoText['fields'][i]['icon']);
+  }
+  //CONTROLLERS
+  for(int i = 0;i < registerControllers.length;i++){
+    everyControllerText.add(registerControllers[i].text);
+  }
+  for(int i = 0;i < condoControllers.length;i++){
+    everyControllerText.add(condoControllers[i].text);
+  }
+  for(int i = 0;i < condoInfoControllers.length;i++){
+    everyControllerText.add(condoInfoControllers[i].text);
+  }
+
+  int soma = resultRegisterText['fields'].length + resultCondoInfoText['fields'].length + resultCondoText['fields'].length;
+  print(soma);
   showModalBottomSheet(
-      isDismissible: false,
+      isDismissible: true,
       barrierColor: Colors.transparent,
       useRootNavigator: true,
       context: context,
@@ -429,25 +460,124 @@ void showMyInfosModal(context) {
         return StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
           return SizedBox(
-            height: 600,
+            height: MediaQuery.of(context).size.height * 0.85,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Center(
+                  const Center(
                       child: Text('Minhas informações',
-                          style: const TextStyle(
-                              fontSize: 22, fontWeight: FontWeight.w600))),
-                  SizedBox(height: 10),
-                  Center(
-                      child: Text(
-                          'Observe se as informações estão corretas para não ter nenhum problema indevido antes de concluir seu cadastro.',
-                          textAlign: TextAlign.start,
                           style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.grey[400]))),
+                              fontSize: 22, fontWeight: FontWeight.w600))),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Center(
+                          child: Container(
+                            width: MediaQuery.of(context).size.width - 60,
+                            child: Text(
+                                'Observe se as informações estão corretas para não ter nenhum problema indevido antes de concluir seu cadastro.',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.grey[600])),
+                          )),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: soma,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              Image.asset('lib/assets/icons/${everyIcon[index]}.png'),
+                              const SizedBox(width: 10),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                      everyInfo[index],
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.grey[700])),
+                                  Text(
+                                  everyControllerText[index].toString(),
+                                  textAlign: TextAlign.start,
+                                  style: const TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black)),
+                                ],
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    width: MediaQuery.of(context).size.width - 40,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              setState(() {
+                                Navigator.pop(context);
+                              });
+                            });
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            side: BorderSide(color: Colors.grey[700]!),
+                            minimumSize: Size(
+                                (MediaQuery.of(context).size.width - 40) / 2, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          child: Text(
+                            "Voltar",
+                            style:
+                                TextStyle(fontSize: 14, color: Colors.grey[700]),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        ElevatedButton(
+                          onPressed: () {
+                            // if (etapaConcluida[1] || (_formKey.currentState!.validate())) {
+                            setState(() {
+                              Navigator.pop(context);
+                              showRegisterModal(context);
+                            });
+                            // }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: AppColors().greencolor,
+                            minimumSize: Size(
+                                (MediaQuery.of(context).size.width - 40) / 2, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
+                          child: Text(
+                            "Confirmar",
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.black),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
